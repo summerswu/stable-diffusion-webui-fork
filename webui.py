@@ -223,6 +223,9 @@ def api_only():
     api = create_api(app)
 
     modules.script_callbacks.before_ui_callback() 
+    modules.script_callbacks.script_unloaded_callback()
+    modules.script_callbacks.model_loaded_callback(shared.sd_model)
+
     modules.script_callbacks.app_started_callback(None, app)
 
     print(f"Startup time: {startup_timer.summary()}.")
