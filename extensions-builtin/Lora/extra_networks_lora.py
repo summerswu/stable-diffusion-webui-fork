@@ -6,6 +6,7 @@ class ExtraNetworkLora(extra_networks.ExtraNetwork):
         super().__init__('lora')
 
     def activate(self, p, params_list):
+        print("lora activation was attempted")
         additional = shared.opts.sd_lora
 
         if additional != "" and additional in lora.available_loras and len([x for x in params_list if x.items[0] == additional]) == 0:
