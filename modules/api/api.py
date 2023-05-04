@@ -376,6 +376,19 @@ class Api:
             populate.sampler_index = None  # prevent a warning later on
 
         args = vars(populate)
+
+        lora_urls = args.pop('lora_urls', None)
+        if lora_urls is not None:
+            if isinstance(lora_urls, dict):
+                os.makedirs('./models/Lora', exist_ok=True)
+            for filename, url in lora_urls.items():
+                filepath = os.path.join('./models/Lora', filename)
+                with requests.get(url, stream=True) as r:
+                    r.raise_for_status()
+                    with open(filepath, 'wb') as f:
+                        for chunk in r.iter_content(chunk_size=8192):
+                            f.write(chunk)
+
         args.pop('include_init_images', None)  # this is meant to be done by "exclude": True in model, but it's for a reason that I cannot determine.
         args.pop('script_name', None)
         args.pop('script_args', None)  # will refeed them to the pipeline directly after initializing them
@@ -403,6 +416,18 @@ class Api:
             shared.state.end()
 
         b64images = list(map(encode_pil_to_base64, processed.images)) if send_images else []
+
+        if lora_urls is not None:
+            for filename in lora_urls.keys():
+                filepath = os.path.join('./models/Lora', filename)
+
+                # Check if the file exists before attempting to delete it
+                if os.path.exists(filepath):
+                    try:
+                        os.remove(filepath)
+                        print(f"Deleted {filepath}")
+                    except Exception as e:
+                        print(f"Error deleting {filepath}: {e}")
 
         if not img2imgreq.include_init_images:
             img2imgreq.init_images = None
