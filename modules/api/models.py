@@ -108,6 +108,7 @@ StableDiffusionTxt2ImgProcessingAPI = PydanticModelGenerator(
         {"key": "save_images", "type": bool, "default": False},
         {"key": "alwayson_scripts", "type": dict, "default": {}},
         {"key": "lora_urls", "type": dict, "default": {}},
+        {"key": "save_loras", "type": bool, "default": False},
     ]
 ).generate_model()
 
@@ -126,6 +127,7 @@ StableDiffusionImg2ImgProcessingAPI = PydanticModelGenerator(
         {"key": "save_images", "type": bool, "default": False},
         {"key": "alwayson_scripts", "type": dict, "default": {}},
         {"key": "lora_urls", "type": dict, "default": {}},
+        {"key": "save_loras", "type": bool, "default": False},
     ]
 ).generate_model()
 

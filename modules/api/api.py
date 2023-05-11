@@ -309,6 +309,9 @@ class Api:
                         for chunk in r.iter_content(chunk_size=8192):
                             f.write(chunk)
 
+        
+        save_loras = args.pop('save_loras', None)
+
         args.pop('script_name', None)
         args.pop('script_args', None) # will refeed them to the pipeline directly after initializing them
         args.pop('alwayson_scripts', None)
@@ -335,7 +338,7 @@ class Api:
 
         b64images = list(map(encode_pil_to_base64, processed.images)) if send_images else []
 
-        if lora_urls is not None:
+        if lora_urls is not None and not save_loras:
             for filename in lora_urls.keys():
                 filepath = os.path.join('./models/Lora', filename)
                 
@@ -389,6 +392,8 @@ class Api:
                         for chunk in r.iter_content(chunk_size=8192):
                             f.write(chunk)
 
+        save_loras = args.pop('save_loras', None)
+
         args.pop('include_init_images', None)  # this is meant to be done by "exclude": True in model, but it's for a reason that I cannot determine.
         args.pop('script_name', None)
         args.pop('script_args', None)  # will refeed them to the pipeline directly after initializing them
@@ -417,7 +422,7 @@ class Api:
 
         b64images = list(map(encode_pil_to_base64, processed.images)) if send_images else []
 
-        if lora_urls is not None:
+        if lora_urls is not None and not save_loras:
             for filename in lora_urls.keys():
                 filepath = os.path.join('./models/Lora', filename)
 
